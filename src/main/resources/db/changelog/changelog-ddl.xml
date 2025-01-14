@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<property name="uuid_type" value="uniqueidentifier" dbms="mssql" />
+	<property name="uuid_function" value="NEWID()" dbms="mssql" />
+
+	<changeSet id="ddl_001" author="Prathamesh Sonawane">
+		<createTable tableName="A_USER">
+			<column name="ID" autoIncrement="true" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="PK_USER"
+					nullable="false" />
+			</column>
+			<column name="USERID" type="UUID">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="USERNAME" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="FIRSTNAME" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="LASTNAME" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="EMAIL" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="PASSWORD" type="VARCHAR(200)">
+				<constraints nullable="false" />
+			</column>
+			<column name="ROLE" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="ACTIVE" type="TINYINT(1)" defaultValueBoolean="true" />
+			<column name="CREATEBY" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATEBY" type="VARCHAR(50)">
+				<constraints nullable="true" />
+			</column>
+			<column name="CREATEDDATE" type="DATETIME">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATEDDATE" type="DATETIME">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+	</changeSet>
+
+</databaseChangeLog>
