@@ -59,4 +59,15 @@ public class UserService implements UserDetailsService, IUser {
 		userRepository.save(user);
 	}
 
+	@Override
+	public void update(UUID userId, UserInfo userInfo) {
+
+		userRepository.findByUserId(userId).ifPresent(user -> {
+
+			user.setFirstName(userInfo.getFirstName());
+
+			userRepository.save(user);
+		});
+	}
+
 }
