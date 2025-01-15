@@ -106,7 +106,20 @@ public class UserService implements UserDetailsService, IUser {
 
 		email.setSubject("Test mail");
 
-		email.setBody("This is test mail.");
+		String body = """
+				<html>
+				    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+				        <div style="text-align: center; margin-bottom: 20px;">
+				            <img src='cid:logoImage' alt='Company Logo' style="width: 150px;"/>
+				        </div>
+				        <h2 style="color: #007bff;">Hello, User!</h2>
+				        <p>Thank you for being part of our platform. Please find the attached PDF for more details.</p>
+				        <p>Best regards,<br/><strong>Your Company Name</strong></p>
+				    </body>
+				</html>
+				""";
+
+		email.setBody(body);
 
 		emailService.sendEmail(email);
 	}

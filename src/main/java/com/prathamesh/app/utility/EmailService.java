@@ -1,8 +1,12 @@
 package com.prathamesh.app.utility;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -34,9 +38,14 @@ public class EmailService {
 			helper.setSubject(email.getSubject());
 			helper.setText(email.getBody(), true);
 
-			// Attachment code.
-//			helper.addAttachment("imageName", imageSource);			
-//			helper.addAttachment("pdfName", pdfSource);
+			ClassPathResource classPathResource = new ClassPathResource("static/logo.jpg");
+
+			helper.addInline("logoImage", classPathResource, "image/png");
+
+			FileSystemResource fileSystemResource = new FileSystemResource(
+					new File("C:\\Users\\HP\\Downloads\\Kalnirnay-Calendar-2025.pdf"));
+
+			helper.addAttachment("Document.pdf", fileSystemResource);
 
 			javaMailSender.send(mimeMessage);
 
