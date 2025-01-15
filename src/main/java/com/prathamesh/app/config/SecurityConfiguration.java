@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,7 +33,7 @@ public class SecurityConfiguration {
 	@Autowired
 	private CorsConfigurationSource corsConfigurationSource;
 
-	List<String> endPoints = List.of("/api/v1/app-test");
+	private List<String> adminGetEndPoints = List.of("/api/v1/admin/app-test");
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +44,9 @@ public class SecurityConfiguration {
 				}).authorizeHttpRequests((authorizeHttpRequests) -> {
 					authorizeHttpRequests.requestMatchers("/").hasRole("User");
 				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests.requestMatchers(createRequestMatchers(endPoints)).hasRole("Admin");
+					authorizeHttpRequests
+							.requestMatchers(createHttpMethodAndPathMatchers(HttpMethod.GET, adminGetEndPoints))
+							.hasRole("Admin");
 				}).authorizeHttpRequests((authorizeHttpRequests) -> {
 					authorizeHttpRequests.anyRequest().authenticated();
 				}).exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
@@ -62,8 +65,14 @@ public class SecurityConfiguration {
 		return http.build();
 	}
 
-	private RequestMatcher[] createRequestMatchers(List<String> endPoints) {
+	RequestMatcher[] createRequestMatchers(List<String> endPoints) {
 
 		return endPoints.stream().map(AntPathRequestMatcher::new).toArray(RequestMatcher[]::new);
+	}
+
+	private RequestMatcher[] createHttpMethodAndPathMatchers(HttpMethod method, List<String> endPoints) {
+
+		return endPoints.stream().map(endpoint -> new HttpMethodAndPathMatcher(method, endpoint))
+				.toArray(RequestMatcher[]::new);
 	}
 }

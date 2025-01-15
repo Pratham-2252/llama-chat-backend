@@ -14,13 +14,13 @@ public class AppController {
 
 	private Logger logger = LoggerFactory.getLogger(AppController.class);
 
-	@GetMapping(path = "/app-test", produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping(path = "/admin/app-test", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> appData() {
 
 		logger.info("Inside App Controller.");
 
 		logger.info("Finished App Controller.");
 
-		return ResponseEntity.ok().body("This is App Application.");
+		return ResponseEntity.ok().body("This is App Application of Prathamesh Sonawane.");
 	}
 }

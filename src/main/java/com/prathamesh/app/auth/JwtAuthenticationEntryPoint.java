@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -19,6 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+	private Logger logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
+
 	private final ObjectMapper objectMapper;
 
 	public JwtAuthenticationEntryPoint(ObjectMapper objectMapper) {
@@ -32,8 +36,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		Map<String, Object> errorDetails = new HashMap<>();
 
 		if (authException instanceof InsufficientAuthenticationException) {
-			
-			authException.printStackTrace();
 
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
@@ -47,6 +49,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 			errorDetails.put("error", "Unauthorized");
 			errorDetails.put("message", "Access denied due to missing or invalid credentials");
 		}
+
+		logger.info("Access denied due to missing or invalid credentials");
 
 		response.setContentType("application/json;charset=UTF-8");
 
