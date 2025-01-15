@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,9 +49,21 @@ public class UserController {
 		logger.info("Retrieving user by ID: {}", userId);
 
 		UserInfo userInfo = userService.getUserByUserId(userId);
-		
+
 		logger.info("Finished getUserByUserId method");
 
 		return ResponseEntity.ok(userInfo);
+	}
+
+	@PostMapping(path = "/admin/mail", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<?> sendMail() {
+
+		logger.info("Inside sendMail method");
+
+		userService.sendMail();
+
+		logger.info("Finished sendMail method");
+
+		return ResponseEntity.ok().body("Email Sent");
 	}
 }

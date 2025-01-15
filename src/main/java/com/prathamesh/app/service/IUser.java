@@ -11,4 +11,6 @@ public interface IUser {
 	public void update(UUID userId, UserInfo userInfo);
 
 	public UserInfo getUserByUserId(UUID userId);
+
+	public void sendMail();
 }

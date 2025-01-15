@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.prathamesh.app.domain.User;
 import com.prathamesh.app.dto.UserInfo;
 import com.prathamesh.app.repository.UserRepository;
+import com.prathamesh.app.utility.Email;
+import com.prathamesh.app.utility.EmailService;
 
 @Service
 public class UserService implements UserDetailsService, IUser {
@@ -23,12 +25,15 @@ public class UserService implements UserDetailsService, IUser {
 	private final UserRepository userRepository;
 	private final ModelMapper modelMapper;
 	private final PasswordEncoder passwordEncoder;
+	private final EmailService emailService;
 
-	public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder,
+			EmailService emailService) {
 		super();
 		this.userRepository = userRepository;
 		this.modelMapper = modelMapper;
 		this.passwordEncoder = passwordEncoder;
+		this.emailService = emailService;
 
 		modelMapper.addMappings(new PropertyMap<User, UserInfo>() {
 			@Override
@@ -90,6 +95,20 @@ public class UserService implements UserDetailsService, IUser {
 
 			return userInfo;
 		}).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+	}
+
+	@Override
+	public void sendMail() {
+
+		Email email = new Email();
+
+		email.setTo("patilpg2002@gmail.com");
+
+		email.setSubject("Test mail");
+
+		email.setBody("This is test mail.");
+
+		emailService.sendEmail(email);
 	}
 
 }

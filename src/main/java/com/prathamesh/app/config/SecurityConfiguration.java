@@ -38,6 +38,7 @@ public class SecurityConfiguration {
 	private CustomLogoutHandler customLogoutHandler;
 
 	private List<String> adminGetEndPoints = List.of("/api/v1/admin/app-test");
+	private List<String> adminPostEndPoints = List.of("/api/v1/admin/mail");
 	private List<String> adminPutEndPoints = List.of("/api/v1/admin/user-update/**");
 
 	@Bean
@@ -51,6 +52,10 @@ public class SecurityConfiguration {
 				}).authorizeHttpRequests((authorizeHttpRequests) -> {
 					authorizeHttpRequests
 							.requestMatchers(createHttpMethodAndPathMatchers(HttpMethod.GET, adminGetEndPoints))
+							.hasRole("Admin");
+				}).authorizeHttpRequests((authorizeHttpRequests) -> {
+					authorizeHttpRequests
+							.requestMatchers(createHttpMethodAndPathMatchers(HttpMethod.POST, adminPostEndPoints))
 							.hasRole("Admin");
 				}).authorizeHttpRequests((authorizeHttpRequests) -> {
 					authorizeHttpRequests
