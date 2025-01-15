@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.PropertyMap;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,12 +20,23 @@ import com.prathamesh.app.repository.UserRepository;
 @Service
 public class UserService implements UserDetailsService, IUser {
 
-	@Autowired
-	private UserRepository userRepository;
-	@Autowired
-	private ModelMapper modelMapper;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+	private final ModelMapper modelMapper;
+	private final PasswordEncoder passwordEncoder;
+
+	public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+		super();
+		this.userRepository = userRepository;
+		this.modelMapper = modelMapper;
+		this.passwordEncoder = passwordEncoder;
+
+		modelMapper.addMappings(new PropertyMap<User, UserInfo>() {
+			@Override
+			protected void configure() {
+				skip(destination.getPassword()); // Exclude password from the mapping
+			}
+		});
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -68,6 +79,17 @@ public class UserService implements UserDetailsService, IUser {
 
 			userRepository.save(user);
 		});
+	}
+
+	@Override
+	public UserInfo getUserByUserId(UUID userId) {
+
+		return userRepository.findByUserId(userId).map(user -> {
+
+			UserInfo userInfo = modelMapper.map(user, UserInfo.class);
+
+			return userInfo;
+		}).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}
 
 }

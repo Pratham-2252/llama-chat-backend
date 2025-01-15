@@ -7,6 +7,8 @@ import com.prathamesh.app.dto.UserInfo;
 public interface IUser {
 
 	public void save(UserInfo userInfo);
-	
+
 	public void update(UUID userId, UserInfo userInfo);
+
+	public UserInfo getUserByUserId(UUID userId);
 }
