@@ -24,7 +24,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@PutMapping(path = "/user-update/{userId}")
+	@PutMapping(path = "/admin/user-update/{userId}")
 	public ResponseEntity<?> update(@PathVariable(value = "userId") UUID userId, @RequestBody UserInfo userInfo) {
 
 		logger.info("Inside update User method");
