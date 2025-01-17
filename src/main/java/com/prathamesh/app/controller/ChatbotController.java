@@ -26,7 +26,7 @@ public class ChatbotController {
 
 		logger.info("Inside askChatbot method");
 
-		String model = "llama2";
+		String model = "llama3.2";
 
 		String chatbotResponse = olammaService.getChatbotResponse(model, prompt);
 

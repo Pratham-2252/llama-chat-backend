@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class OlammaService {
 
-	private static final String OLAMMA_URL = "http://127.0.0.1:11434/completions";
+	private static final String OLAMMA_URL = "http://127.0.0.1:11434/api/generate";
 
 	public String getChatbotResponse(String model, String prompt) {
 
@@ -23,7 +23,8 @@ public class OlammaService {
 
 			RestTemplate restTemplate = new RestTemplate();
 
-			String requestBody = new ObjectMapper().writeValueAsString(Map.of("model", model, "prompt", prompt));
+			String requestBody = new ObjectMapper()
+					.writeValueAsString(Map.of("model", model, "prompt", prompt, "stream", false));
 
 			HttpHeaders headers = new HttpHeaders();
 
@@ -35,7 +36,7 @@ public class OlammaService {
 
 			JsonNode jsonResponse = new ObjectMapper().readTree(response.getBody());
 
-			return jsonResponse.path("completion").asText();
+			return jsonResponse.get("response").asText();
 
 		} catch (JsonProcessingException e) {
 
