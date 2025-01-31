@@ -54,4 +54,36 @@ public class AuthenticationController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
 		}
 	}
+
+	@PostMapping("/auth/authenticate/oauth2")
+	public ResponseEntity<?> authenticateOAuth2(@RequestBody OAuth2Request request) {
+
+		try {
+
+			String credential = request.getCredential();
+
+			AuthenticationResponse authenticate = authenticationService.authenticateOAuth2(credential);
+
+			return ResponseEntity.ok(authenticate);
+
+		} catch (Exception ex) {
+
+			ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+		}
+	}
+}
+
+class OAuth2Request {
+
+	private String credential;
+
+	public String getCredential() {
+		return credential;
+	}
+
+	public void setCredential(String credential) {
+		this.credential = credential;
+	}
 }

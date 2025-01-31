@@ -60,7 +60,7 @@ public class UserService implements UserDetailsService, IUser {
 	}
 
 	@Override
-	public void save(UserInfo userInfo) {
+	public User save(UserInfo userInfo) {
 
 		User user = modelMapper.map(userInfo, User.class);
 
@@ -72,7 +72,7 @@ public class UserService implements UserDetailsService, IUser {
 		user.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
 		user.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
 
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 
 	@Override
