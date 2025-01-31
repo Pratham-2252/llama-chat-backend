@@ -2,8 +2,6 @@ package com.prathamesh.app.controller;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,17 +20,11 @@ import com.prathamesh.app.service.EncryptionService;
 @RequestMapping("/api/v1")
 public class AppController {
 
-	private Logger logger = LoggerFactory.getLogger(AppController.class);
-
 	@Autowired
 	private EncryptionService encryptionService;
 
 	@GetMapping(path = "/admin/app-test", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> appData() {
-
-		logger.info("Inside App Controller.");
-
-		logger.info("Finished App Controller.");
 
 		return ResponseEntity.ok().body("This is App Application of Prathamesh Sonawane.");
 	}

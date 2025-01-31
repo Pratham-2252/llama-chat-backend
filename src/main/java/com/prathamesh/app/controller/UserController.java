@@ -2,8 +2,6 @@ package com.prathamesh.app.controller;
 
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +19,6 @@ import com.prathamesh.app.service.UserService;
 @RequestMapping("/api/v1")
 public class UserController {
 
-	private Logger logger = LoggerFactory.getLogger(UserController.class);
-
 	private UserService userService;
 
 	public UserController(UserService userService) {
@@ -33,11 +29,7 @@ public class UserController {
 	@PutMapping(path = "/admin/user-update/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> update(@PathVariable(value = "userId") UUID userId, @RequestBody UserInfo userInfo) {
 
-		logger.info("Inside update User method");
-
 		userService.update(userId, userInfo);
-
-		logger.info("Finished update User method");
 
 		return ResponseEntity.ok().body("User Updated");
 	}
@@ -46,11 +38,7 @@ public class UserController {
 			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<?> getUserByUserId(@PathVariable UUID userId) {
 
-		logger.info("Retrieving user by ID: {}", userId);
-
 		UserInfo userInfo = userService.getUserByUserId(userId);
-
-		logger.info("Finished getUserByUserId method");
 
 		return ResponseEntity.ok(userInfo);
 	}
@@ -58,11 +46,7 @@ public class UserController {
 	@PostMapping(path = "/admin/mail", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> sendMail() {
 
-		logger.info("Inside sendMail method");
-
 		userService.sendMail();
-
-		logger.info("Finished sendMail method");
 
 		return ResponseEntity.ok().body("Email Sent");
 	}

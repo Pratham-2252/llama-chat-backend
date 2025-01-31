@@ -1,7 +1,5 @@
 package com.prathamesh.app.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +20,6 @@ import com.prathamesh.app.service.AuthenticationService;
 @RequestMapping("/api/v1")
 public class AuthenticationController {
 
-	private Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
-
 	@Autowired
 	private AuthenticationService authenticationService;
 
@@ -32,13 +28,10 @@ public class AuthenticationController {
 
 		try {
 
-			logger.info("Inside register method.");
-
 			authenticationService.register(userInfo);
 
-			logger.info("Finished register method.");
-
 			return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
+
 		} catch (UserAlreadyExistsException ex) {
 
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
@@ -50,11 +43,7 @@ public class AuthenticationController {
 
 		try {
 
-			logger.info("Inside authenticate method.");
-
 			AuthenticationResponse authenticate = authenticationService.authenticate(authenticationRequest);
-
-			logger.info("Finished authenticate method.");
 
 			return ResponseEntity.ok(authenticate);
 
