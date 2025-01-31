@@ -30,6 +30,9 @@
     </root>
 
     <!-- Custom Package Logging -->
-    <logger name="com.prathamesh.app" level="DEBUG"/>
+    <logger name="com.prathamesh.app" level="INFO"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="liquibase" level="INFO"/>
 
 </configuration>
