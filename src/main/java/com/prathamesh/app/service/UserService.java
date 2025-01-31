@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.prathamesh.app.domain.User;
 import com.prathamesh.app.dto.UserInfo;
+import com.prathamesh.app.exceptions.UserAlreadyExistsException;
 import com.prathamesh.app.repository.UserRepository;
 import com.prathamesh.app.utility.Email;
 import com.prathamesh.app.utility.EmailService;
@@ -61,6 +62,11 @@ public class UserService implements UserDetailsService, IUser {
 
 	@Override
 	public User save(UserInfo userInfo) {
+
+		if (getByUserName(userInfo.getUserName()).isPresent()) {
+
+			throw new UserAlreadyExistsException("User with email " + userInfo.getUserName() + " already exists");
+		}
 
 		User user = modelMapper.map(userInfo, User.class);
 
